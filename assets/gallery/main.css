@@ -1,0 +1,337 @@
+html, body {
+    font-family: Georgia, serif;
+    background-color: rgb(4 4 4);
+    color: white;
+    margin: 0;
+}
+
+#menu-container {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 150px;
+    z-index: 1;
+    color: white;
+    text-shadow: 0 0 2px #444444;
+    background: linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0,0,0,0) 100%);
+    z-index: 3;
+}
+
+#menu {
+    margin-top: -20px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+    backdrop-filter: blur();
+}
+
+#menu p {
+    margin-left: 20px;
+    mix-blend-mode: difference;
+}
+
+#menu span {
+    color: rgba(255, 255, 255, 0.859);
+}
+
+#menu button {
+    width: 180px;
+    background: rgba(0, 0, 0, 0.5);
+    color: rgb(166, 166, 166);
+    margin: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.114);
+    padding: 7px;
+    cursor: pointer;
+    transition: color 0.3s ease, background-color 0.3s ease, border 0.2s ease-out;
+    margin-left: 0;
+}
+
+#menu button.active {
+    border: 1px solid rgb(151, 151, 151);
+    color: white;
+}
+
+#menu button:hover {
+    border-color: white;
+}
+
+#header-pic {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
+    object-fit: cover;
+    object-position: bottom;
+    overflow: clip;
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 0;
+}
+
+#header-pic img {
+    grid-column: 1;
+    grid-row: 1;
+    height: 120vh;
+    zoom: 130%;
+}
+
+#header-pic #main-text {
+    width: 100%;
+    height: 100%;
+    grid-column: 1;
+    grid-row: 1;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.306);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    backdrop-filter: blur(1);
+    color: #ffffff;
+}
+
+#main-text #main-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#main-text h2 {
+    font-style: italic;
+    font-size: 10vw;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+#main-text h2 span {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+@media screen and (min-width: 700px) {
+    #main-text h2 {
+        font-size: 80px;
+    }
+}
+
+#main-text h4 {
+    font-size: 20px
+}
+
+.temp-hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, border 0.5s ease;
+    will-change: opacity, transform, border;
+}
+
+.temp-hidden.now-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#gallery {
+    width: 100%;
+    margin: auto;
+    margin-bottom: 40px;
+    animation: fadein 1s;
+    box-shadow: 0 0 20px black;
+    z-index: 2;
+}
+
+#gallery-grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+}
+
+#gallery-grid .entry {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid black;
+}
+
+#gallery-grid img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 2;
+}
+
+#gallery-grid .entry:hover {
+    border: 1px solid rgb(109, 109, 109);
+}
+
+#c {
+    font-family: system-ui, -apple-system, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+    color: rgb(96, 96, 96);
+    text-align: center;
+    margin-top: 35px;
+}
+
+:where(:fullscreen) {
+    border: none !important;
+}
+
+#info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+#info > div {
+    width: 400px;
+    border: 1px solid rgb(32, 32, 32);
+    box-shadow: 0 0 35px rgb(12, 12, 12);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    padding-bottom: 35px;
+    padding-top: 30px;
+    gap: 20px;
+    animation: fadein 0.5s;
+}
+
+#info > div hr {
+    width: 85%;
+    border: 1px solid #202020;
+}
+
+#info > div > div {
+    width: 85%;
+}
+
+#info > div p {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 30px;
+    color: rgb(220, 220, 220);
+}
+
+#info > div div.bio p {
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 20px;
+}
+
+#info > div p span {
+    color: rgb(86, 86, 86);
+}
+
+#info > div p.info-subheading {
+    font-size: 1.1rem;
+    color: rgb(237, 237, 237);
+    font-style: italic;
+}
+
+#info a {
+    color: rgb(126, 171, 185);
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 800px) {
+    #menu p {
+        margin-right: 10px;
+        width: 110px;
+    }
+
+    #menu button {
+        width: auto;
+    }
+
+    #gallery {
+        width: auto;
+    }
+    
+    #gallery-grid {
+        grid-template-columns: none;
+        gap: 0;
+    }
+
+    #info {
+        height: 100vh;
+    }
+
+    #info > div {
+        box-shadow: none;
+        border: none;
+        padding: none;
+    }
+}
+
+@keyframes fadein {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+#photo-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 300ms ease, visibility 300ms ease;
+}
+
+#photo-viewer.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+#photo-container {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#viewer-image {
+    display: block;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+#photo-info {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-family: monospace;
+    font-size: 14px;
+    z-index: 1;
+    pointer-events: none;
+}

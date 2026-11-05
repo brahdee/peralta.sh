@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>peralta.sh - photography</title>
+    <link rel="stylesheet" href="/gallery/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/gallery/main.js"></script>
+  </head>
+  <body>
+    <div id="menu-container">
+      <div id="menu" class="transparent">
+        <p><span>braddy peralta | </span>photography</p>
+        <div>
+          <button id="gallery-btn" class="active" onclick="openTab('gallery')">gallery</button>
+          <button id="info-btn" onclick="openTab('info')">information</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="gallery" class="shown">
+      <div id="header-pic">
+        <img src="<%= mainphoto %>">
+        <div id="main-text">
+          <div id="main-text-container">
+            <h2><span>⌄</span> all works <span>⌄</span></h2>
+            <h4>people & places</h4>
+          </div>
+        </div>
+      </div>
+
+      <div id="gallery-grid">
+        <% photos.forEach(year => { %>
+
+          <% year.albums.digital.forEach(photo => { %>
+            <div class="entry">
+              <img
+                src="<%= photo %>"
+                data-year="<%= year.year %>"
+                onclick="openPhoto(this)"
+              >
+            </div>
+          <% }); %>
+
+          <% year.albums.film.forEach(photo => { %>
+            <div class="entry">
+              <img
+                src="<%= photo %>"
+                data-year="<%= year.year %>"
+                onclick="openPhoto(this)"
+              >
+            </div>
+          <% }); %>
+
+        <% }); %>
+      </div>
+
+      <p id="c">(c) braddy peralta <span>2026</span></p>
+    </div>
+
+    <div id="info" class="hidden">
+      <div>
+        <div>
+          <p class="info-subheading">camera gear</p>
+          <p><span>&bull;</span> Fujifilm XT-5 <span>w/</span> 16-80mm f/4 lens <span>(digital)</span></p>
+          <p><span>&bull;</span> Pentax K1000 <span>w/</span> 50mm lens <span>(film)</span></p>
+        </div>
+        <hr>
+        <div class="bio">
+          <p>I'm a hobbyist photographer from NYC.<br><br>
+          This website was <a href="https://github.com/brahdee/peralta.sh">made from scratch</a> & photos are uploaded in no particular order.<br><br>
+          If you want to reach me for anything, you can<br><a href="mailto:braddy@peralta.sh">email me</a>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="photo-viewer">
+      <div id="photo-container">
+        <div id="photo-info">
+          <span id="photo-name"></span>
+          <span id="photo-year"></span>
+        </div>
+        <img id="viewer-image" src="" alt="">
+      </div>
+    </div>
+  </body>
+</html>
