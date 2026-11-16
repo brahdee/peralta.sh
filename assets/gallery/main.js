@@ -21,15 +21,12 @@ function openTab(tabId) {
 }
 
 // Fade main text as the user scrolls
-$(window).scroll(function() {
+$(window).scroll(function () {
   const scrollTop = $(window).scrollTop();
 
-  $("#main-text").each(function() {
+  $("#main-text").each(function () {
     $(this).css("opacity", 1 - scrollTop / 300);
-    $(this).css(
-      "transform",
-      `translate(-50%, -${50 + scrollTop / 100}%)`
-    );
+    $(this).css("transform", `translate(-50%, -${50 + scrollTop / 100}%)`);
   });
 });
 
@@ -75,11 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const observerOptions = {
     root: null,
     rootMargin: "0px",
-    threshold: 0.1
+    threshold: 0.1,
   };
 
   const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("now-visible");
         observer.unobserve(entry.target);
@@ -87,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }, observerOptions);
 
-  document.querySelectorAll(".temp-hidden").forEach(el => {
+  document.querySelectorAll(".temp-hidden").forEach((el) => {
     observer.observe(el);
   });
 
@@ -107,4 +104,71 @@ document.addEventListener("DOMContentLoaded", () => {
       closePhoto();
     }
   });
+
+  const gallery = document.getElementById("gallery-grid");
+  const galleryToggle = document.getElementById("gallery-toggle");
+
+  if (gallery && galleryToggle) {
+    const entries = [...gallery.querySelectorAll(".entry")];
+    const visibleCount = 3;
+
+    const extraEntries = entries.slice(
+      visibleCount,
+      entries.length - visibleCount,
+    );
+
+    let expanded = false;
+    let collapseTimeout;
+
+    extraEntries.forEach((entry) => {
+      entry.classList.add("gallery-hidden");
+    });
+
+    if (extraEntries.length === 0) {
+      galleryToggle.hidden = true;
+    }
+
+    galleryToggle.addEventListener("click", () => {
+      expanded = !expanded;
+      clearTimeout(collapseTimeout);
+
+      galleryToggle.textContent = expanded
+        ? "↑ show fewer photos ↑"
+        : "↓ show all photos ↓";
+
+      galleryToggle.setAttribute("aria-expanded", expanded);
+
+      if (expanded) {
+        extraEntries.forEach((entry) => {
+          entry.classList.remove("gallery-hidden");
+          entry.classList.add("gallery-fading-out");
+        });
+
+        requestAnimationFrame(() => {
+          extraEntries.forEach((entry) => {
+            entry.classList.remove("gallery-fading-out");
+          });
+        });
+      } else {
+        const previousScroll = window.scrollY;
+
+        extraEntries.forEach((entry) => {
+          entry.classList.add("gallery-fading-out");
+        });
+
+        collapseTimeout = setTimeout(() => {
+          if (!expanded) {
+            extraEntries.forEach((entry) => {
+              entry.classList.add("gallery-hidden");
+            });
+
+            window.scrollTo({
+              top: previousScroll,
+              behavior: "instant",
+            });
+          }
+        }, 300);
+      }
+    });
+  }
 });
