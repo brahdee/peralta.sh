@@ -35,14 +35,6 @@ div#main-container {
   cursor: default;
 }
 
-div#main-bg {
-  background-image: url("tumblr.gif");
-  background-size: cover;
-  position: absolute;
-  top: 30px;
-  right: 0;
-}
-
 div#main {
   border: 2px dashed rgb(27, 27, 27);
   padding: 20px;
@@ -73,12 +65,15 @@ p#header {
   width: 100%;
 }
 
+p#header span:not(:first-child) {
+  opacity: 80%;
+}
+
 p#header #separator {
   color: rgb(84, 84, 84);
 }
 
 .aqua {
-  text-align: justify;
   color: rgb(67, 171, 203);
 }
 
@@ -150,4 +145,77 @@ div#submenu {
 #spotify img {
   width: 64px;
   height: 64px;
+}
+
+@media (max-width: 700px) {
+  div#main-container {
+    width: auto;
+    height: 300px;
+    margin: 10%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    cursor: default;
+    font-size: inherit;
+  }
+
+  div#main {
+    border: inherit;
+    padding: 0;
+    width: auto;
+    height: auto;
+    margin: auto;
+  }
+
+  div#main #inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-weight: 400;
+    max-width: none;
+    height: auto;
+  }
+
+  div#main p {
+    text-align: center;
+    z-index: 5;
+  }
+
+  p#header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 5px;
+    text-align: center;
+  }
+
+  p#catinfo {
+    display: inline-block;
+    position: relative;
+    top: -50px;
+    right: 15%;
+    margin: auto;
+  }
+
+  div#cat {
+    display: inline-block;
+    position: relative;
+    margin: auto;
+    top: 0;
+    right: -40px;
+  }
+
+  div#submenu {
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    width: 85%;
+    margin: auto;
+  }
+
+  div#submenu > p {
+    text-align: center;
+    width: 100%;
+  }
 }
