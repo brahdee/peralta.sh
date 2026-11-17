@@ -1,6 +1,7 @@
 import { api } from "encore.dev/api";
 import ejs, { Options } from "ejs";
 import { photoObjs } from "./storage";
+import { getDetails } from "./misc";
 
 const TEMPLATE_PATH = "./templates";
 const ejsOptions: Options = { views: [TEMPLATE_PATH] };
@@ -10,16 +11,36 @@ export const assets = api.static(
   { expose: true, path: "/!path", dir: "./assets", notFound: "./assets/404.html"},
 );
 
+// Serve homepage content
+export const serveHomepage = api.raw(
+  { expose: true, path: "/", method: "GET" },
+  async (req, resp) => {
+    const viewPath = `${TEMPLATE_PATH}/main/index.ejs`;
+
+    const details = await getDetails();
+        
+    const html = await ejs.renderFile(
+      viewPath,
+      details,
+    );
+
+    resp.setHeader("content-type", "text/html");
+    resp.end(html);
+  },
+);
+
 // Serve /gallery content
 export const serveGallery = api.raw(
   { expose: true, path: "/gallery", method: "GET" },
   async (req, resp) => {
     const viewPath = `${TEMPLATE_PATH}/gallery/index.ejs`;
+
     const html = await ejs.renderFile(
       viewPath,
       { photos: photoObjs, mainphoto: photoObjs.find(y => y.year === 2026)?.albums.digital.find(p => p.endsWith("0008.webp")) },
       ejsOptions,
     );
+
     resp.setHeader("content-type", "text/html");
     resp.end(html);
   },

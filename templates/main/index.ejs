@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>peralta.sh</title>
+    <link rel="stylesheet" href="/main/main.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/main/main.js"></script>
+  </head>
+  <body>
+    <div id="main-container">
+      <p id="header">
+        <span>braddy peralta</span>
+        <span id="separator">///</span>
+        <span class="aqua">java, python, javascript, css, html</span>
+      </p>
+      <div id="main">
+        <div id="main-bg"></div>
+        <div id="inner">
+          <p>
+            Hi! I'm a <span id="age"><%= age %></span> year old computer science
+            student, currently studying at
+            <a href="https://ncsu.edu" id="uni"> NC State University</a>.
+          </p>
+          <p>
+            I also do some photography in my free time, a gallery of which which
+            <a href="/gallery" class="aqua">you can view over here ></a>
+          </p>
+          <p>
+            Thank you for your curiosity! If you want to contact me, feel free
+            to email me at:
+          </p>
+          <p>
+            <a href="mailto:braddy@peralta.sh" class="aqua"
+              >braddy@peralta.sh</a
+            >
+          </p>
+          <div id="cat"></div>
+          <p id="catinfo">my cat -></p>
+        </div>
+      </div>
+      <div id="submenu">
+        <p>It's currently <span id="clock">-:-- --</span> for me (EST)</p>
+        <p>&bull;</p>
+        <a href="https://github.com/brahdee" class="aqua">GitHub</a>
+        <p>&bull;</p>
+        <a href="https://linkedin.com/in/braddyp" class="aqua">LinkedIn</a>
+      </div>
+      <div id="spotify" style="--album-color: <%= nowPlaying?.color %>">
+        <p>
+          Currently listening to:<br />
+          <a
+            href="<%= nowPlaying?.url %>"
+            target="_blank"
+            class="aqua"
+            id="song"
+          >
+            <%= nowPlaying?.name %> </a
+          ><br />(on spotify)
+        </p>
+        <img
+          src="<%= nowPlaying?.image %>"
+          id="album-art"
+          alt="Album artwork"
+        />
+      </div>
+    </div>
+  </body>
+</html>
