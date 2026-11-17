@@ -41,7 +41,7 @@ div#main {
   padding: 20px;
   width: auto;
   height: 100%;
-  transition: border 0.5s ease-in-out;
+  transition: border-color 0.5s ease-in-out;
   border-width: 1px;
 }
 
@@ -168,7 +168,7 @@ div#submenu {
   }
 
   div#main {
-    border: inherit;
+    border: 0px solid black;
     padding: 0;
     width: auto;
     height: auto;
