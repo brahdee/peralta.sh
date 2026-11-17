@@ -15,6 +15,8 @@ $(document).ready(function () {
 
       if (!song) {
         $("#spotify").removeClass("visible");
+        $("body").css("--album-color", "");
+
         return;
       }
 
@@ -26,10 +28,15 @@ $(document).ready(function () {
         setTimeout(function () {
           $("#song").text(song.name).attr("href", song.url);
           $("#album-art").attr("src", song.image);
+          $("body").css("--album-color", song.color);
           $("#spotify").css("--album-color", song.color);
 
           $("#spotify").addClass("visible");
         }, 300);
+      } else {
+        $("#spotify").addClass("visible");
+        $("#spotify").css("--album-color", song.color);
+        $("body").css("--album-color", song.color);
       }
     });
   }
