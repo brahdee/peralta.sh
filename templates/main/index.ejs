@@ -60,15 +60,17 @@
       </div>
       <div id="spotify" style="--album-color: <%= nowPlaying?.color %>">
         <p>
-          Currently listening to:<br />
+          <span class="darker">Currently listening to:</span><br />
           <a
             href="<%= nowPlaying?.url %>"
             target="_blank"
             class="aqua"
             id="song"
           >
-            <%= nowPlaying?.name %> </a
-          ><br />(on spotify)
+            <%= nowPlaying?.name %>
+          </a>
+          <br /><span class="darker">by</span>
+          <span id="artist"><%= nowPlaying?.artist %></span>
         </p>
         <img
           src="<%= nowPlaying?.image %>"

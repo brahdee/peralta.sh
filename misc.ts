@@ -7,19 +7,6 @@ const refreshToken = secret("spotifyRefreshToken");
 
 import sharp from "sharp";
 
-async function getAverageColor(imageUrl: string): Promise<string> {
-    const response = await fetch(imageUrl);
-    const buffer = Buffer.from(await response.arrayBuffer());
-
-    const { data } = await sharp(buffer)
-        .resize(1, 1)
-        .removeAlpha()
-        .raw()
-        .toBuffer({ resolveWithObject: true });
-
-    return `rgba(${data[0]}, ${data[1]}, ${data[2]}, 0.3)`;
-}
-
 type Details = {
   readonly age: number,
   readonly nowPlaying: NowPlaying | null
@@ -30,6 +17,7 @@ interface NowPlaying {
     url: string;
     image: string;
     color: string;
+    artist: string;
 }
 
 interface SpotifyResponse {
@@ -42,9 +30,15 @@ interface SpotifyResponse {
     } | null;
 }
 
-async function getCurrentSong(): Promise<NowPlaying | null> {
-    // Refresh access token
-    const tokenResponse = await fetch(
+let accessToken = "";
+let tokenExpiresAt = 0;
+
+async function getAccessToken(): Promise<string | null> {
+    if (accessToken && Date.now() < tokenExpiresAt) {
+        return accessToken;
+    }
+
+    const response = await fetch(
         "https://accounts.spotify.com/api/token",
         {
             method: "POST",
@@ -61,17 +55,60 @@ async function getCurrentSong(): Promise<NowPlaying | null> {
         }
     );
 
-    if (!tokenResponse.ok) return null;
+    if (!response.ok) return null;
 
-    const tokenData = await tokenResponse.json() as {
+    const data = await response.json() as {
         access_token: string;
+        expires_in: number;
     };
+
+    accessToken = data.access_token;
+    tokenExpiresAt = Date.now() + (data.expires_in - 60) * 1000;
+
+    return accessToken;
+}
+
+const colorCache = new Map<string, string>();
+
+async function getAverageColor(imageUrl: string): Promise<string> {
+    const cached = colorCache.get(imageUrl);
+
+    if (cached) return cached;
+
+    const response = await fetch(imageUrl);
+    const buffer = Buffer.from(await response.arrayBuffer());
+
+    const { data } = await sharp(buffer)
+        .resize(1, 1)
+        .removeAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+
+    const color = `rgba(${data[0]}, ${data[1]}, ${data[2]})`;
+
+    colorCache.set(imageUrl, color);
+
+    return color;
+}
+
+let cachedSong: NowPlaying | null = null;
+let lastSongFetch = 0;
+
+const CACHE_DURATION = 2000;
+
+async function getCurrentSong(): Promise<NowPlaying | null> {
+    if (Date.now() - lastSongFetch < CACHE_DURATION) {
+        return cachedSong;
+    }
+
+    const token = await getAccessToken();
+    if (!token) return null;
 
     const response = await fetch(
         "https://api.spotify.com/v1/me/player/currently-playing",
         {
             headers: {
-                Authorization: `Bearer ${tokenData.access_token}`
+                Authorization: `Bearer ${token}`
             }
         }
     );
@@ -91,17 +128,27 @@ async function getCurrentSong(): Promise<NowPlaying | null> {
                     height: number;
                 }[];
             };
+            artists: {
+                name: string;
+            }[];
         } | null;
     };
 
     if (!data.item) return null;
 
-    return {
+    const imageUrl = data.item.album.images[0]?.url ?? "";
+
+    cachedSong = {
         name: data.item.name,
         url: data.item.external_urls.spotify,
-        image: data.item.album.images[0]?.url ?? "",
-        color: await getAverageColor(data.item.album.images[0].url) ?? ""
+        image: imageUrl,
+        color: await getAverageColor(imageUrl),
+        artist: data.item.artists.map(a => a.name).join(", ")
     };
+
+    lastSongFetch = Date.now();
+
+    return cachedSong;
 }
 
 var currentAge = Math.floor((new Date().getTime() - new Date("2006-12-18T12:00:00.0000").getTime()) / 31557600000);

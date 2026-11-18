@@ -14,7 +14,7 @@ export const assets = api.static(
 // Serve homepage content
 export const serveHomepage = api.raw(
   { expose: true, path: "/", method: "GET" },
-  async (req, resp) => {
+  async (_, resp) => {
     const viewPath = `${TEMPLATE_PATH}/main/index.ejs`;
 
     const details = await getDetails();
@@ -32,7 +32,7 @@ export const serveHomepage = api.raw(
 // Serve /gallery content
 export const serveGallery = api.raw(
   { expose: true, path: "/gallery", method: "GET" },
-  async (req, resp) => {
+  async (_, resp) => {
     const viewPath = `${TEMPLATE_PATH}/gallery/index.ejs`;
 
     const html = await ejs.renderFile(

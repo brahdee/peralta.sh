@@ -31,6 +31,7 @@ in the repo directory.
 - `./templates/gallery` - where gallery template files are stored for content generation
 - `main.ts` - main application code
 - `storage.ts` - util for connecting to R2 storage for images
+- `misc.ts` - util for dynamic website data
 
 ---
 
