@@ -88,7 +88,7 @@ async function getAverageColor(imageUrl: string): Promise<string> {
         .raw()
         .toBuffer({ resolveWithObject: true });
 
-    const color = `rgba(${data[0]}, ${data[1]}, ${data[2]})`;
+    const color = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
 
     colorCache.set(imageUrl, color);
 
