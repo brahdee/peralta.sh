@@ -8,7 +8,7 @@ const ejsOptions: Options = { views: [TEMPLATE_PATH] };
 
 // Static files
 export const assets = api.static(
-  { expose: true, path: "/!path", dir: "./assets", notFound: "./assets/404.html"},
+  { expose: true, path: "/assets/*path", dir: "./assets"},
 );
 
 // Serve homepage content (at root)
@@ -40,6 +40,18 @@ export const serveGallery = api.raw(
       { photos: photoObjs, mainphoto: photoObjs.find(y => y.year === 2026)?.albums.digital.find(p => p.endsWith("0008.webp")) },
       ejsOptions,
     );
+
+    resp.setHeader("content-type", "text/html");
+    resp.end(html);
+  },
+);
+
+// 404
+export const notFound = api.raw(
+  { expose: true, path: "/!path", method: "GET" },
+  async (_, resp) => {
+    const viewPath = `${TEMPLATE_PATH}/404/index.ejs`;
+    const html = await ejs.renderFile(viewPath);
 
     resp.setHeader("content-type", "text/html");
     resp.end(html);
