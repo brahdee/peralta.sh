@@ -13,8 +13,8 @@ export const assets = api.static(
 
 // Serve homepage content (at root)
 export const serveHomepage = api.raw(
-  { expose: true, path: "/", method: "GET" },
-  async (_, resp) => {
+  { expose: true, path: "/", method: ["GET", "HEAD"] },
+  async (req, resp) => {
     const viewPath = `${TEMPLATE_PATH}/main/index.ejs`;
 
     const details = await getDetails();
@@ -25,6 +25,11 @@ export const serveHomepage = api.raw(
     );
 
     resp.setHeader("content-type", "text/html");
+
+    if (req.method === "HEAD") {
+      resp.end();
+      return;
+    }
     resp.end(html);
   },
 );
