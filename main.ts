@@ -1,7 +1,7 @@
 import { api } from "encore.dev/api";
 import ejs, { Options } from "ejs";
 import { photoObjs } from "./storage";
-import { getDetails } from "./misc";
+import { getDetails } from "./details";
 
 const TEMPLATE_PATH = "./templates";
 const ejsOptions: Options = { views: [TEMPLATE_PATH] };
@@ -11,7 +11,7 @@ export const assets = api.static(
   { expose: true, path: "/!path", dir: "./assets", notFound: "./assets/404.html"},
 );
 
-// Serve homepage content
+// Serve homepage content (at root)
 export const serveHomepage = api.raw(
   { expose: true, path: "/", method: "GET" },
   async (_, resp) => {

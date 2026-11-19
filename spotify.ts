@@ -1,17 +1,24 @@
 import { api } from "encore.dev/api";
 import { secret } from "encore.dev/config";
 
+import sharp from "sharp";
+
+// Token variables
 const clientID = secret("spotifyClientID");
 const clientSecret = secret("spotifyClientSecret");
 const refreshToken = secret("spotifyRefreshToken");
 
-import sharp from "sharp";
+let accessToken = "";
+let tokenExpiresAt = 0;
 
-type Details = {
-  readonly age: number,
-  readonly nowPlaying: NowPlaying | null
-}
+// Cache variables for optimization
+const colorCache = new Map<string, string>();
+let cachedSong: NowPlaying | null = null;
+let lastSongFetch = 0;
 
+const CACHE_DURATION = 2000;
+
+// Interfaces for expected variables 
 interface NowPlaying {
     name: string;
     url: string;
@@ -30,9 +37,7 @@ interface SpotifyResponse {
     } | null;
 }
 
-let accessToken = "";
-let tokenExpiresAt = 0;
-
+// Gets the access token that will be used to communicate with Spotify's API 
 async function getAccessToken(): Promise<string | null> {
     if (accessToken && Date.now() < tokenExpiresAt) {
         return accessToken;
@@ -68,8 +73,7 @@ async function getAccessToken(): Promise<string | null> {
     return accessToken;
 }
 
-const colorCache = new Map<string, string>();
-
+// Gets the average color of album artwork for use with dynamic elements
 async function getAverageColor(imageUrl: string): Promise<string> {
     const cached = colorCache.get(imageUrl);
 
@@ -91,11 +95,7 @@ async function getAverageColor(imageUrl: string): Promise<string> {
     return color;
 }
 
-let cachedSong: NowPlaying | null = null;
-let lastSongFetch = 0;
-
-const CACHE_DURATION = 2000;
-
+// Gets a NowPlaying object using API responses
 async function getCurrentSong(): Promise<NowPlaying | null> {
     if (Date.now() - lastSongFetch < CACHE_DURATION) {
         return cachedSong;
@@ -151,15 +151,7 @@ async function getCurrentSong(): Promise<NowPlaying | null> {
     return cachedSong;
 }
 
-var currentAge = Math.floor((new Date().getTime() - new Date("2006-12-18T12:00:00.0000").getTime()) / 31557600000);
-
-export async function getDetails(): Promise<Details> {
-    return {
-        age: currentAge,
-        nowPlaying: await getCurrentSong()
-    }
-}
-
+// Export for use in details.ts
 export const currentSong = api(
     { expose: true, method: "GET", path: "/spotify/current" },
     async (): Promise<{ song: NowPlaying | null }> => {
