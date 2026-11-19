@@ -25,17 +25,32 @@ interface NowPlaying {
     image: string;
     color: string;
     artist: string;
+    duration: number;
+    progress: number;
+    isPlaying: boolean;
 }
 
 interface SpotifyResponse {
     is_playing: boolean;
+    progress_ms: number | null;
     item: {
         name: string;
+        duration_ms: number;
         external_urls: {
             spotify: string;
         };
+        album: {
+            images: {
+                url: string;
+                width: number;
+                height: number;
+            }[];
+        };
+        artists: {
+            name: string;
+        }[];
     } | null;
-}
+};
 
 // Gets the access token that will be used to communicate with Spotify's API 
 async function getAccessToken(): Promise<string | null> {
@@ -115,24 +130,7 @@ async function getCurrentSong(): Promise<NowPlaying | null> {
 
     if (response.status === 204 || !response.ok) return null;
 
-    const data = await response.json() as {
-        item: {
-            name: string;
-            external_urls: {
-                spotify: string;
-            };
-            album: {
-                images: {
-                    url: string;
-                    width: number;
-                    height: number;
-                }[];
-            };
-            artists: {
-                name: string;
-            }[];
-        } | null;
-    };
+    const data = await response.json() as SpotifyResponse;
 
     if (!data.item) return null;
 
@@ -143,7 +141,10 @@ async function getCurrentSong(): Promise<NowPlaying | null> {
         url: data.item.external_urls.spotify,
         image: imageUrl,
         color: await getAverageColor(imageUrl),
-        artist: data.item.artists.map(a => a.name).join(", ")
+        artist: data.item.artists.map(a => a.name).join(", "),
+        duration: data.item.duration_ms,
+        progress: data.progress_ms ?? 0,
+        isPlaying: data.is_playing
     };
 
     lastSongFetch = Date.now();
