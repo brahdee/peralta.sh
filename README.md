@@ -1,12 +1,11 @@
 # peralta.sh
-A personal website built on <a href="https://encore.dev/ts">Encore.ts</a>.
+A personal website built on [Encore.ts](https://encore.dev/ts). View the live version [here!](https://peralta.sh)
 
 ![TypeScript](https://img.shields.io/badge/typescript-black?style=for-the-badge&logo=typescript)
 ![HTML](https://img.shields.io/badge/ejs-black?style=for-the-badge&logo=ejs)
 ![HTML](https://img.shields.io/badge/html-black?style=for-the-badge&logo=html5)
 ![CSS](https://img.shields.io/badge/css-black?style=for-the-badge&logo=css)
 ![R2/S3](https://img.shields.io/badge/r2%2Fs3-black?style=for-the-badge&logo=cloudflare)
-![Website](https://img.shields.io/website?style=for-the-badge&labelColor=black&up_color=blue&up_message=online&url=https%3A%2F%2Fperalta.sh&label=status)
 
 > #### Brief history of this repo
 > I've always enjoyed making and designing websites as a hobby, with this being one of them!
