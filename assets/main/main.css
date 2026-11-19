@@ -48,6 +48,7 @@ div#main-container {
 }
 
 div#main {
+  position: relative;
   border: 2px dashed;
   border-color: color-mix(in srgb, var(--album-color) 50%, black);
   padding: 20px;
@@ -101,7 +102,7 @@ div#cat {
   background-image: url("https://cdn2.peralta.sh/cat.png");
   position: absolute;
   background-size: cover;
-  bottom: -70px;
+  bottom: 0;
   right: 0;
   width: 100px;
   height: 100px;
@@ -112,7 +113,7 @@ p#catinfo {
   display: none;
   position: absolute;
   right: 30px;
-  bottom: -50px;
+  bottom: 0;
   width: 150px;
   text-align: right;
   color: rgb(118, 114, 143);
@@ -159,6 +160,7 @@ div#submenu {
 
 #spotify p {
   color: color-mix(in srgb, var(--album-color), rgb(193, 191, 219) 30%);
+  line-height: 18px;
 }
 
 #spotify span.darker {
