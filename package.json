@@ -8,6 +8,8 @@
   "devDependencies": {
     "@types/ejs": "^3.1.5",
     "@types/node": "^20.5.7",
+    "chokidar-cli": "^3.0.0",
+    "minify": "^15.3.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
@@ -15,5 +17,9 @@
     "ejs": "^7.0.2",
     "encore.dev": "^1.58.8",
     "sharp": "^0.35.5"
+  },
+  "scripts": {
+    "minify": "node scripts/minify.js",
+    "watch:minify": "chokidar 'assets/**/*.{css,js}' -i '**/*.min.*' -c 'npm run minify'"
   }
 }
